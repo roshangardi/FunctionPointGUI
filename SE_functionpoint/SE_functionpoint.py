@@ -303,23 +303,25 @@ class Ui_MainWindow(object):
         # comment start
         self.chooselang_btn.clicked.connect(self.displaylang)
         self.vaf_btn.clicked.connect(self.vafdialog)
-        # self.calculatefp()
+        self.EI_lineedit.setText("1")
         # comment end
-
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.calculatefp()
 
-    # def calculatefp(self):
-    #     ei = self.EI_lineedit.text()
-    #     if self.radioButton.isChecked():
-    #         self.simple = 3
-    #     elif self.radioButton_3.isChecked():
-    #         self.simple = 4
-    #     elif self.radioButton_2.isChecked():
-    #         self.simple = 6
-    #     result = ei * self.simple
-    #     self.EI_Label.setText(result)
+    def calculatefp(self):
+        self.simple = 0
+        self.ei = int(self.EI_lineedit.text())
+        print(self.ei)
+        if self.radioButton.isChecked():
+            self.simple = 3
+        elif self.radioButton_3.isChecked():
+            self.simple = 4
+        elif self.radioButton_2.isChecked():
+            self.simple = 6
+        self.result = self.ei * self.simple
+        self.EI_Label.setText(str(self.result))
 
     def displaylang(self):
         self.Dialog = QtWidgets.QDialog()
