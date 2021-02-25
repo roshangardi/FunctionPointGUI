@@ -303,7 +303,12 @@ class Ui_MainWindow(object):
         # comment start
         self.chooselang_btn.clicked.connect(self.displaylang)
         self.vaf_btn.clicked.connect(self.vafdialog)
-        self.EI_lineedit.setText("1")
+        self.computefp_btn.clicked.connect(self.calculatefp)
+        self.EI_lineedit.setText("0")
+        self.EO_lineedit.setText("1 ")
+        self.EInq_lineedit.setText("0")
+        self.ILF_lineedit.setText("0")
+        self.EIF_lineedit.setText("0")
         # comment end
 
         self.retranslateUi(MainWindow)
@@ -311,17 +316,63 @@ class Ui_MainWindow(object):
         self.calculatefp()
 
     def calculatefp(self):
-        self.simple = 0
+        self.choice = 0
         self.ei = int(self.EI_lineedit.text())
-        print(self.ei)
         if self.radioButton.isChecked():
-            self.simple = 3
+            self.choice = 3
         elif self.radioButton_3.isChecked():
-            self.simple = 4
+            self.choice = 4
         elif self.radioButton_2.isChecked():
-            self.simple = 6
-        self.result = self.ei * self.simple
+            self.choice = 6
+        self.result = self.ei * self.choice
         self.EI_Label.setText(str(self.result))
+
+        self.eo = int(self.EO_lineedit.text())
+        if self.radioButton_4.isChecked():
+            self.choice = 4
+        elif self.radioButton_5.isChecked():
+            self.choice = 5
+        elif self.radioButton_6.isChecked():
+            self.choice = 7
+        self.result = self.eo * self.choice
+        self.EO_Label.setText(str(self.result))
+
+        self.einq = int(self.EInq_lineedit.text())
+        if self.radioButton_10.isChecked():
+            self.choice = 3
+        elif self.radioButton_11.isChecked():
+            self.choice = 4
+        elif self.radioButton_12.isChecked():
+            self.choice = 6
+        self.result = self.einq * self.choice
+        self.EInq_Label.setText(str(self.result))
+
+        self.ilf = int(self.ILF_lineedit.text())
+        if self.radioButton_7.isChecked():
+            self.choice = 7
+        elif self.radioButton_8.isChecked():
+            self.choice = 10
+        elif self.radioButton_9.isChecked():
+            self.choice = 15
+        self.result = self.ilf * self.choice
+        self.ILF_Label.setText(str(self.result))
+
+        self.eif = int(self.EIF_lineedit.text())
+        if self.radioButton_13.isChecked():
+            self.choice = 5
+        elif self.radioButton_14.isChecked():
+            self.choice = 7
+        elif self.radioButton_15.isChecked():
+            self.choice = 10
+        self.result = self.eif * self.choice
+        self.EIF_Label.setText(str(self.result))
+
+        # ********************
+        self.totalcount = int(self.EI_Label.text()) + int(self.EO_Label.text()) + int(self.EInq_Label.text()) + int(self.ILF_Label.text()) + int(self.EIF_Label.text())
+        self.TC_Label.setText(str(self.totalcount))
+        self.fp = self.totalcount * (0.65 + (0.01 * 20))
+        self.FP_Label.setText(str(self.fp))
+        # *********************
 
     def displaylang(self):
         self.Dialog = QtWidgets.QDialog()
