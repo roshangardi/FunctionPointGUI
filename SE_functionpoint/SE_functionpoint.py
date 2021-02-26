@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QDialog
 from SelectLangPack import SE_select_language
 from ValueAdjustmentFactors import SE_VAF
+from decimal import Decimal
 
 
 class Ui_MainWindow(object):
@@ -365,8 +366,9 @@ class Ui_MainWindow(object):
         # ********************
         self.totalcount = int(self.EI_Label.text()) + int(self.EO_Label.text()) + int(self.EInq_Label.text()) + int(self.ILF_Label.text()) + int(self.EIF_Label.text())
         self.TC_Label.setText(str(self.totalcount))
-        self.fp = self.totalcount * (0.65 + (0.01 * int(self.VAF_Label.text())))
-        self.FP_Label.setText(str(self.fp))
+        self.vaf_value = int(self.VAF_Label.text())
+        self.fp = self.totalcount * (Decimal('0.65') + (Decimal('0.01') * Decimal(self.vaf_value)))
+        self.FP_Label.setText(str(int(self.fp)))
         # *********************
 
     def displaylang(self):
@@ -390,7 +392,7 @@ class Ui_MainWindow(object):
             self.VAF_Label.setText(str(self.vaf_obj.get_vaf_value()))
 
     def codesize(self):
-        self.CodeSize_Label.setText(str(self.displaylang_result * self.fp))
+        self.CodeSize_Label.setText(str(self.displaylang_result * int(self.fp)))
         self.Language_Label.setText(self.lang)
 
     def retranslateUi(self, MainWindow):
