@@ -5,6 +5,10 @@ from ValueAdjustmentFactors import SE_VAF
 
 
 class Ui_MainWindow(object):
+    def __init__(self):
+        self.displaylang_result = 50
+        self.lang = "Visual Basic"
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(720, 638)
@@ -299,6 +303,7 @@ class Ui_MainWindow(object):
         self.EInq_lineedit.setText("0")
         self.ILF_lineedit.setText("0")
         self.EIF_lineedit.setText("0")
+        self.codesize_btn.clicked.connect(self.codesize)
         # comment end
 
         self.retranslateUi(MainWindow)
@@ -360,15 +365,19 @@ class Ui_MainWindow(object):
         # ********************
         self.totalcount = int(self.EI_Label.text()) + int(self.EO_Label.text()) + int(self.EInq_Label.text()) + int(self.ILF_Label.text()) + int(self.EIF_Label.text())
         self.TC_Label.setText(str(self.totalcount))
-        self.fp = self.totalcount * (0.65 + (0.01 * 20))
+        self.fp = self.totalcount * (0.65 + (0.01 * int(self.VAF_Label.text())))
         self.FP_Label.setText(str(self.fp))
         # *********************
 
     def displaylang(self):
         self.Dialog = QtWidgets.QDialog()
-        self.lang_obj = SE_select_language.Ui_Dialog()
-        self.lang_obj.setupUi(self.Dialog)
+        self.codesizeobj = SE_select_language.Ui_Dialog()
+        self.codesizeobj.setupUi(self.Dialog)
         self.Dialog.show()
+        self.response = self.Dialog.exec_()
+
+        if self.response == QtWidgets.QDialog.Accepted:
+            self.displaylang_result, self.lang = self.codesizeobj.getvalue()
 
     def vafdialog(self):
         self.Dialog = QtWidgets.QDialog()
@@ -379,6 +388,10 @@ class Ui_MainWindow(object):
 
         if self.response == QtWidgets.QDialog.Accepted:
             self.VAF_Label.setText(str(self.vaf_obj.get_vaf_value()))
+
+    def codesize(self):
+        self.CodeSize_Label.setText(str(self.displaylang_result * self.fp))
+        self.Language_Label.setText(self.lang)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -427,7 +440,7 @@ class Ui_MainWindow(object):
         self.FP_Label.setText(_translate("MainWindow", "0"))
         self.VAF_Label.setText(_translate("MainWindow", "0"))
         self.CodeSize_Label.setText(_translate("MainWindow", "0"))
-        self.Language_Label.setText(_translate("MainWindow", "Python"))
+        self.Language_Label.setText(_translate("MainWindow", "Visual Basic"))
         self.Menu_file.setTitle(_translate("MainWindow", "File"))
         self.Menu_edit.setTitle(_translate("MainWindow", "Edit"))
         self.Menu_preferences.setTitle(_translate("MainWindow", "Preferences"))
