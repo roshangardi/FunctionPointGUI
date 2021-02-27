@@ -2,6 +2,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from NewprojectPack import SE_newproject
 from SelectLangPack import SE_select_language
 from ValueAdjustmentFactors import SE_VAF
+from FP_Dialog import SE_FP_dialog
+from SE_functionpoint import SE_functionpoint
+from Duplicate_tab_UI import SE_tab_duplicate
 from decimal import Decimal
 
 
@@ -9,7 +12,7 @@ class Ui_MainWindow(object):
     def __init__(self):
         self.displaylang_result = 50
         self.lang = "Visual Basic"
-    def setupUi(self, MainWindow):
+    def setupUi(self, MainWindow,fpname):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(743, 716)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -264,9 +267,9 @@ class Ui_MainWindow(object):
         self.VAF_Label.setFont(font)
         self.VAF_Label.setObjectName("VAF_Label")
         self.tabWidget.addTab(self.tab, "")
-        self.tab_2 = QtWidgets.QWidget()
-        self.tab_2.setObjectName("tab_2")
-        self.tabWidget.addTab(self.tab_2, "")
+        # self.tab_2 = QtWidgets.QWidget()
+        # self.tab_2.setObjectName("tab_2")
+        # self.tabWidget.addTab(self.tab_2, "")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 743, 21))
@@ -322,12 +325,28 @@ class Ui_MainWindow(object):
         self.ILF_lineedit.setText("0")
         self.EIF_lineedit.setText("0")
         self.codesize_btn.clicked.connect(self.codesize)
+        self.actionEnter_FP_Data.triggered.connect(lambda: self.addtab())
         # comment end
 
-        self.retranslateUi(MainWindow)
+        self.retranslateUi(MainWindow, fpname)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.calculatefp()
+
+    def addtab(self):
+        self.Dialog2 = QtWidgets.QDialog()
+        self.fpdia = SE_FP_dialog.Ui_Dialog()
+        self.fpdia.setupUi(self.Dialog2)
+        self.Dialog2.show()
+        self.response = self.Dialog2.exec_()
+
+        if self.response == QtWidgets.QDialog.Accepted:
+            self.fp_dialog = self.fpdia.getfp_name()
+            Form = QtWidgets.QWidget()
+            self.fpobj = SE_tab_duplicate.Ui_Form()
+            self.fpobj.setupUi(Form)
+            self.tabWidget.addTab(Form, self.fp_dialog)
+            _translate = QtCore.QCoreApplication.translate
 
     def calculatefp(self):
         self.choice = 0
@@ -414,7 +433,7 @@ class Ui_MainWindow(object):
         self.Language_Label.setText(self.lang)
 
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self, MainWindow, fpname):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Function Points"))
         self.EO_Label.setText(_translate("MainWindow", "0"))
@@ -431,7 +450,7 @@ class Ui_MainWindow(object):
         self.radioButton_5.setText(_translate("MainWindow", "5"))
         self.radioButton_6.setText(_translate("MainWindow", "7"))
         self.EI_Label.setText(_translate("MainWindow", "0"))
-        self.Language_Label.setText(_translate("MainWindow", "Python"))
+        self.Language_Label.setText(_translate("MainWindow", "Visual Basic"))
         self.label_7.setText(_translate("MainWindow", "Current Language"))
         self.label_4.setText(_translate("MainWindow", "External Inquiries"))
         self.radioButton_10.setText(_translate("MainWindow", "3"))
@@ -458,7 +477,7 @@ class Ui_MainWindow(object):
         self.chooselang_btn.setText(_translate("MainWindow", "Choose Language"))
         self.VAF_Label.setText(_translate("MainWindow", "0"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Tab 2"))
+        # self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Tab 2"))
         self.Menu_file.setTitle(_translate("MainWindow", "File"))
         self.Menu_edit.setTitle(_translate("MainWindow", "Edit"))
         self.Menu_preferences.setTitle(_translate("MainWindow", "Preferences"))
@@ -476,6 +495,14 @@ class Ui_MainWindow(object):
         self.File_Exit.setText(_translate("MainWindow", "Exit"))
         self.actionEnter_FP_Data.setText(_translate("MainWindow", "Enter FP Data"))
 
+        # commentstart
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", fpname))
+        self.radioButton_3.setChecked(True)
+        self.radioButton_5.setChecked(True)
+        self.radioButton_8.setChecked(True)
+        self.radioButton_11.setChecked(True)
+        self.radioButton_14.setChecked(True)
+        # commentend
 
 if __name__ == "__main__":
     import sys

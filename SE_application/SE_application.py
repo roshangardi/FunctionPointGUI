@@ -78,9 +78,8 @@ class Ui_MainWindow(object):
 
         if self.response == QtWidgets.QDialog.Accepted:
             self.fp_dialog = self.fpdia.getfp_name()
-            print(self.fp_dialog)
             self.fpobj = SE_tab.Ui_MainWindow()
-            self.fpobj.setupUi(MainWindow)
+            self.fpobj.setupUi(MainWindow,self.fp_dialog)
             # self.fpobj = SE_functionpoint.Ui_MainWindow()
             # self.fpobj.setupUi(MainWindow)
 
