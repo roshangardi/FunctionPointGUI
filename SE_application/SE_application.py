@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from SE_functionpoint import SE_functionpoint
 from NewprojectPack import SE_newproject
 from FP_Dialog import SE_FP_dialog
+from TabUI import SE_tab
 
 
 class Ui_MainWindow(object):
@@ -78,8 +79,10 @@ class Ui_MainWindow(object):
         if self.response == QtWidgets.QDialog.Accepted:
             self.fp_dialog = self.fpdia.getfp_name()
             print(self.fp_dialog)
-            self.fpobj = SE_functionpoint.Ui_MainWindow()
+            self.fpobj = SE_tab.Ui_MainWindow()
             self.fpobj.setupUi(MainWindow)
+            # self.fpobj = SE_functionpoint.Ui_MainWindow()
+            # self.fpobj.setupUi(MainWindow)
 
     def newprojdialog(self):
         self.Dialog = QtWidgets.QDialog()

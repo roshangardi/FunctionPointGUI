@@ -1,8 +1,14 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from NewprojectPack import SE_newproject
+from SelectLangPack import SE_select_language
+from ValueAdjustmentFactors import SE_VAF
+from decimal import Decimal
 
 
 class Ui_MainWindow(object):
+    def __init__(self):
+        self.displaylang_result = 50
+        self.lang = "Visual Basic"
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(743, 716)
@@ -306,13 +312,107 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.Menu_Project_code.menuAction())
         self.menubar.addAction(self.Menu_Help.menuAction())
 
+        # comment start
+        self.chooselang_btn.clicked.connect(self.displaylang)
+        self.vaf_btn.clicked.connect(self.vafdialog)
+        self.computefp_btn.clicked.connect(self.calculatefp)
+        self.EI_lineedit.setText("0")
+        self.EO_lineedit.setText("0")
+        self.EInq_lineedit.setText("0")
+        self.ILF_lineedit.setText("0")
+        self.EIF_lineedit.setText("0")
+        self.codesize_btn.clicked.connect(self.codesize)
+        # comment end
+
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.calculatefp()
 
-        # Comment Start
+    def calculatefp(self):
+        self.choice = 0
+        self.ei = int(self.EI_lineedit.text())
+        if self.radioButton.isChecked():
+            self.choice = 3
+        elif self.radioButton_3.isChecked():
+            self.choice = 4
+        elif self.radioButton_2.isChecked():
+            self.choice = 6
+        self.result = self.ei * self.choice
+        self.EI_Label.setText(str(self.result))
 
-        # Comment End
+        self.eo = int(self.EO_lineedit.text())
+        if self.radioButton_4.isChecked():
+            self.choice = 4
+        elif self.radioButton_5.isChecked():
+            self.choice = 5
+        elif self.radioButton_6.isChecked():
+            self.choice = 7
+        self.result = self.eo * self.choice
+        self.EO_Label.setText(str(self.result))
+
+        self.einq = int(self.EInq_lineedit.text())
+        if self.radioButton_10.isChecked():
+            self.choice = 3
+        elif self.radioButton_11.isChecked():
+            self.choice = 4
+        elif self.radioButton_12.isChecked():
+            self.choice = 6
+        self.result = self.einq * self.choice
+        self.EInq_Label.setText(str(self.result))
+
+        self.ilf = int(self.ILF_lineedit.text())
+        if self.radioButton_7.isChecked():
+            self.choice = 7
+        elif self.radioButton_8.isChecked():
+            self.choice = 10
+        elif self.radioButton_9.isChecked():
+            self.choice = 15
+        self.result = self.ilf * self.choice
+        self.ILF_Label.setText(str(self.result))
+
+        self.eif = int(self.EIF_lineedit.text())
+        if self.radioButton_13.isChecked():
+            self.choice = 5
+        elif self.radioButton_14.isChecked():
+            self.choice = 7
+        elif self.radioButton_15.isChecked():
+            self.choice = 10
+        self.result = self.eif * self.choice
+        self.EIF_Label.setText(str(self.result))
+
+        # ********************
+        self.totalcount = int(self.EI_Label.text()) + int(self.EO_Label.text()) + int(self.EInq_Label.text()) + int(self.ILF_Label.text()) + int(self.EIF_Label.text())
+        self.TC_Label.setText(str(self.totalcount))
+        self.vaf_value = int(self.VAF_Label.text())
+        self.fp = self.totalcount * (Decimal('0.65') + (Decimal('0.01') * Decimal(self.vaf_value)))
+        self.FP_Label.setText(str(int(self.fp)))
+        # *********************
+
+    def displaylang(self):
+        self.Dialog = QtWidgets.QDialog()
+        self.codesizeobj = SE_select_language.Ui_Dialog()
+        self.codesizeobj.setupUi(self.Dialog)
+        self.Dialog.show()
+        self.response = self.Dialog.exec_()
+
+        if self.response == QtWidgets.QDialog.Accepted:
+            self.displaylang_result, self.lang = self.codesizeobj.getvalue()
+
+    def vafdialog(self):
+        self.Dialog = QtWidgets.QDialog()
+        self.vaf_obj = SE_VAF.Ui_Dialog()
+        self.vaf_obj.setupUi(self.Dialog)
+        self.Dialog.show()
+        self.response = self.Dialog.exec_()
+
+        if self.response == QtWidgets.QDialog.Accepted:
+            self.VAF_Label.setText(str(self.vaf_obj.get_vaf_value()))
+
+    def codesize(self):
+        self.CodeSize_Label.setText(str(self.displaylang_result * int(self.fp)))
+        self.Language_Label.setText(self.lang)
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
