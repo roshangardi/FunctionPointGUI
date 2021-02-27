@@ -267,9 +267,6 @@ class Ui_MainWindow(object):
         self.VAF_Label.setFont(font)
         self.VAF_Label.setObjectName("VAF_Label")
         self.tabWidget.addTab(self.tab, "")
-        # self.tab_2 = QtWidgets.QWidget()
-        # self.tab_2.setObjectName("tab_2")
-        # self.tabWidget.addTab(self.tab_2, "")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 743, 21))
@@ -326,12 +323,17 @@ class Ui_MainWindow(object):
         self.EIF_lineedit.setText("0")
         self.codesize_btn.clicked.connect(self.codesize)
         self.actionEnter_FP_Data.triggered.connect(lambda: self.addtab())
+        self.File_new.triggered.connect(lambda: self.newprojdialog())
+        self.tabWidget.tabCloseRequested.connect(self.tab_closer)
         # comment end
 
         self.retranslateUi(MainWindow, fpname)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.calculatefp()
+
+    def tab_closer(self,index):
+        self.tabWidget.removeTab(index)
 
     def addtab(self):
         self.Dialog2 = QtWidgets.QDialog()
@@ -346,7 +348,18 @@ class Ui_MainWindow(object):
             self.fpobj = SE_tab_duplicate.Ui_Form()
             self.fpobj.setupUi(Form)
             self.tabWidget.addTab(Form, self.fp_dialog)
+            self.tabWidget.setCurrentIndex(self.tabWidget.count()-1)
             _translate = QtCore.QCoreApplication.translate
+
+    def newprojdialog(self):
+        self.Dialog = QtWidgets.QDialog()
+        self.newproj_obj = SE_newproject.Ui_Dialog()
+        self.newproj_obj.setupUi(self.Dialog)
+        self.Dialog.show()
+        self.response = self.Dialog.exec_()
+
+        if self.response == QtWidgets.QDialog.Accepted:
+            self.projname_value = self.newproj_obj.getproject_name()
 
     def calculatefp(self):
         self.choice = 0

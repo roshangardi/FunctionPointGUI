@@ -68,8 +68,6 @@ class Ui_MainWindow(object):
 
 
     def displayfp(self):
-        # self.fpobj = SE_functionpoint.Ui_MainWindow()
-        # self.fpobj.setupUi(MainWindow)
         self.Dialog2 = QtWidgets.QDialog()
         self.fpdia = SE_FP_dialog.Ui_Dialog()
         self.fpdia.setupUi(self.Dialog2)
@@ -80,8 +78,7 @@ class Ui_MainWindow(object):
             self.fp_dialog = self.fpdia.getfp_name()
             self.fpobj = SE_tab.Ui_MainWindow()
             self.fpobj.setupUi(MainWindow,self.fp_dialog)
-            # self.fpobj = SE_functionpoint.Ui_MainWindow()
-            # self.fpobj.setupUi(MainWindow)
+
 
     def newprojdialog(self):
         self.Dialog = QtWidgets.QDialog()
@@ -92,7 +89,6 @@ class Ui_MainWindow(object):
 
         if self.response == QtWidgets.QDialog.Accepted:
             self.projname_value = self.newproj_obj.getproject_name()
-            print(self.projname_value)
 
 
     def retranslateUi(self, MainWindow):
