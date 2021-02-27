@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from SE_functionpoint import SE_functionpoint
 from NewprojectPack import SE_newproject
+from FP_Dialog import SE_FP_dialog
 
 
 class Ui_MainWindow(object):
@@ -66,14 +67,30 @@ class Ui_MainWindow(object):
 
 
     def displayfp(self):
-        self.fpobj = SE_functionpoint.Ui_MainWindow()
-        self.fpobj.setupUi(MainWindow)
+        # self.fpobj = SE_functionpoint.Ui_MainWindow()
+        # self.fpobj.setupUi(MainWindow)
+        self.Dialog2 = QtWidgets.QDialog()
+        self.fpdia = SE_FP_dialog.Ui_Dialog()
+        self.fpdia.setupUi(self.Dialog2)
+        self.Dialog2.show()
+        self.response = self.Dialog2.exec_()
+
+        if self.response == QtWidgets.QDialog.Accepted:
+            self.fp_dialog = self.fpdia.getfp_name()
+            print(self.fp_dialog)
+            self.fpobj = SE_functionpoint.Ui_MainWindow()
+            self.fpobj.setupUi(MainWindow)
 
     def newprojdialog(self):
         self.Dialog = QtWidgets.QDialog()
         self.newproj_obj = SE_newproject.Ui_Dialog()
         self.newproj_obj.setupUi(self.Dialog)
         self.Dialog.show()
+        self.response = self.Dialog.exec_()
+
+        if self.response == QtWidgets.QDialog.Accepted:
+            self.projname_value = self.newproj_obj.getproject_name()
+            print(self.projname_value)
 
 
     def retranslateUi(self, MainWindow):

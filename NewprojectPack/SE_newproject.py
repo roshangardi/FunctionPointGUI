@@ -81,6 +81,16 @@ class Ui_Dialog(object):
         self.buttonBox.rejected.connect(Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
+        # Comment Start
+        self.projectname_lineEdit.textChanged.connect(self.setproject_name)
+        # Comment End
+
+    def setproject_name(self):
+        self.project_name = self.projectname_lineEdit.text()
+
+    def getproject_name(self):
+        return self.project_name
+
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "New Project"))
