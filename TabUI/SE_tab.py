@@ -12,7 +12,9 @@ class Ui_MainWindow(object):
     def __init__(self):
         self.displaylang_result = 50
         self.lang = "Visual Basic"
-    def setupUi(self, MainWindow,fpname):
+        self.tabs_list = []
+
+    def setupUi(self, MainWindow, fpname):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(743, 716)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -313,6 +315,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.Menu_Help.menuAction())
 
         # comment start
+        self.tab_array = []
         self.chooselang_btn.clicked.connect(self.displaylang)
         self.vaf_btn.clicked.connect(self.vafdialog)
         self.computefp_btn.clicked.connect(self.calculatefp)
@@ -332,7 +335,7 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.calculatefp()
 
-    def tab_closer(self,index):
+    def tab_closer(self, index):
         self.tabWidget.removeTab(index)
 
     def addtab(self):
@@ -347,8 +350,9 @@ class Ui_MainWindow(object):
             Form = QtWidgets.QWidget()
             self.fpobj = SE_tab_duplicate.Ui_Form()
             self.fpobj.setupUi(Form)
+            self.tabs_list.append(self.fpobj)
             self.tabWidget.addTab(Form, self.fp_dialog)
-            self.tabWidget.setCurrentIndex(self.tabWidget.count()-1)
+            self.tabWidget.setCurrentIndex(self.tabWidget.count() - 1)
             _translate = QtCore.QCoreApplication.translate
 
     def newprojdialog(self):
@@ -414,7 +418,8 @@ class Ui_MainWindow(object):
         self.EIF_Label.setText(str(self.result))
 
         # ********************
-        self.totalcount = int(self.EI_Label.text()) + int(self.EO_Label.text()) + int(self.EInq_Label.text()) + int(self.ILF_Label.text()) + int(self.EIF_Label.text())
+        self.totalcount = int(self.EI_Label.text()) + int(self.EO_Label.text()) + int(self.EInq_Label.text()) + int(
+            self.ILF_Label.text()) + int(self.EIF_Label.text())
         self.TC_Label.setText(str(self.totalcount))
         self.vaf_value = int(self.VAF_Label.text())
         self.fp = self.totalcount * (Decimal('0.65') + (Decimal('0.01') * Decimal(self.vaf_value)))
@@ -444,7 +449,6 @@ class Ui_MainWindow(object):
     def codesize(self):
         self.CodeSize_Label.setText(str(self.displaylang_result * int(self.fp)))
         self.Language_Label.setText(self.lang)
-
 
     def retranslateUi(self, MainWindow, fpname):
         _translate = QtCore.QCoreApplication.translate
@@ -517,8 +521,10 @@ class Ui_MainWindow(object):
         self.radioButton_14.setChecked(True)
         # commentend
 
+
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

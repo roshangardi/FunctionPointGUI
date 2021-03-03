@@ -1,5 +1,4 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from SE_functionpoint import SE_functionpoint
 from NewprojectPack import SE_newproject
 from FP_Dialog import SE_FP_dialog
 from TabUI import SE_tab
@@ -58,7 +57,7 @@ class Ui_MainWindow(object):
 
         # commentstart
 
-        self.actionEnter_FP_Data.triggered.connect(lambda: self.displayfp())
+        self.actionEnter_FP_Data.triggered.connect(self.displayfp)
         self.File_new.triggered.connect(lambda: self.newprojdialog())
 
         # comment end
@@ -75,9 +74,10 @@ class Ui_MainWindow(object):
         self.response = self.Dialog2.exec_()
 
         if self.response == QtWidgets.QDialog.Accepted:
+            self.widgetobject = QtWidgets.QWidget()
             self.fp_dialog = self.fpdia.getfp_name()
             self.fpobj = SE_tab.Ui_MainWindow()
-            self.fpobj.setupUi(MainWindow,self.fp_dialog)
+            self.fpobj.setupUi(self.widgetobject,self.fp_dialog)
 
 
     def newprojdialog(self):

@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from FP_Dialog import SE_FP_dialog
 from SelectLangPack import SE_select_language
 from ValueAdjustmentFactors import SE_VAF
 from decimal import Decimal
@@ -347,6 +348,22 @@ class Ui_Form(object):
     def codesize(self):
         self.CodeSize_Label_2.setText(str(self.displaylang_result * int(self.fp)))
         self.Language_Label_2.setText(self.lang)
+
+    def addtab(self):
+        self.Dialog2 = QtWidgets.QDialog()
+        self.fpdia = SE_FP_dialog.Ui_Dialog()
+        self.fpdia.setupUi(self.Dialog2)
+        self.Dialog2.show()
+        self.response = self.Dialog2.exec_()
+
+        if self.response == QtWidgets.QDialog.Accepted:
+            self.fp_dialog = self.fpdia.getfp_name()
+            Form = QtWidgets.QWidget()
+            self.fpobj = Ui_Form()
+            self.fpobj.setupUi(Form)
+            self.tabWidget.addTab(Form, self.fp_dialog)
+            self.tabWidget.setCurrentIndex(self.tabWidget.count()-1)
+            _translate = QtCore.QCoreApplication.translate
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
