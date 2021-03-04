@@ -11,7 +11,7 @@ class Ui_Form(object):
         self.displaylang_result = 50
         self.lang = "Visual Basic"
 
-    def setupUi(self, Form):
+    def setupUi(self, Form, fpname):
         Form.setObjectName("Form")
         Form.resize(717, 603)
         self.label_12 = QtWidgets.QLabel(Form)

@@ -2,10 +2,20 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from NewprojectPack import SE_newproject
 from FP_Dialog import SE_FP_dialog
 from TabUI import SE_tab
+from Duplicate_tab_UI import SE_tab_duplicate
 
 
 class Ui_MainWindow(object):
+    def __init__(self):
+        self.displaylang_result = 50
+        self.lang = "Visual Basic"
+        self.tabs_list = []
+
     def setupUi(self, MainWindow):
+        self.displaylang_result = 50
+        self.lang = "Visual Basic"
+        self.tabs_list = []
+
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(642, 596)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -54,17 +64,62 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.Menu_metrics.menuAction())
         self.menubar.addAction(self.Menu_Project_code.menuAction())
         self.menubar.addAction(self.Menu_Help.menuAction())
+        self.File_Exit.triggered.connect(lambda: self.exiter())
 
         # commentstart
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
+        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 751, 641))
+        self.tabWidget.setFont(font)
+        self.tabWidget.setMouseTracking(False)
+        self.tabWidget.setAutoFillBackground(True)
+        self.tabWidget.setTabShape(QtWidgets.QTabWidget.Triangular)
+        self.tabWidget.setDocumentMode(False)
+        self.tabWidget.setTabsClosable(True)
+        self.tabWidget.setMovable(True)
+        self.tabWidget.setObjectName("tabWidget")
+        self.tab = QtWidgets.QWidget()
+        self.tab.setObjectName("tab")
+        self.tab = QtWidgets.QWidget()
+        self.tab.setObjectName("tab")
+        # self.EO_Label = QtWidgets.QLabel(self.tab)
+        self.tab_array = []
+
+        ################
 
         self.actionEnter_FP_Data.triggered.connect(self.displayfp)
         self.File_new.triggered.connect(lambda: self.newprojdialog())
-
+        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.tabCloseRequested.connect(self.tab_closer)
         # comment end
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+    def tab_closer(self, index):
+        self.tabWidget.removeTab(index)
+
+    def exiter(self):
+        print("I'm exiting")
+        sys.exit()
+
+    # def addtab(self):
+    #     self.Dialog2 = QtWidgets.QDialog()
+    #     self.fpdia = SE_FP_dialog.Ui_Dialog()
+    #     self.fpdia.setupUi(self.Dialog2)
+    #     self.Dialog2.show()
+    #     self.response = self.Dialog2.exec_()
+    #
+    #     if self.response == QtWidgets.QDialog.Accepted:
+    #         self.fp_dialog = self.fpdia.getfp_name()
+    #         Form = QtWidgets.QWidget()
+    #         self.fpobj = SE_tab_duplicate.Ui_Form()
+    #         self.fpobj.setupUi(Form,self.fp_dialog)
+    #         self.tabs_list.append(self.fpobj)
+    #         self.tabWidget.addTab(Form, self.fp_dialog)
+    #         self.tabWidget.setCurrentIndex(self.tabWidget.count() - 1)
+    #         _translate = QtCore.QCoreApplication.translate
 
     def displayfp(self):
         self.Dialog2 = QtWidgets.QDialog()
@@ -76,8 +131,15 @@ class Ui_MainWindow(object):
         if self.response == QtWidgets.QDialog.Accepted:
             self.widgetobject = QtWidgets.QWidget()
             self.fp_dialog = self.fpdia.getfp_name()
-            self.fpobj = SE_tab.Ui_MainWindow()
-            self.fpobj.setupUi(self.widgetobject,self.fp_dialog)
+            # self.fpobj = SE_tab_duplicate.Ui_Form()
+            # self.fpobj.setupUi(self.widgetobject,self.fp_dialog)
+            Form = QtWidgets.QWidget()
+            self.fpobj = SE_tab_duplicate.Ui_Form()
+            self.fpobj.setupUi(Form, self.fp_dialog)
+            self.tabs_list.append(self.fpobj)
+            self.tabWidget.addTab(Form, self.fp_dialog)
+            self.tabWidget.setCurrentIndex(self.tabWidget.count() - 1)
+            _translate = QtCore.QCoreApplication.translate
 
 
     def newprojdialog(self):
@@ -110,6 +172,9 @@ class Ui_MainWindow(object):
         self.File_Save.setShortcut(_translate("MainWindow", "Ctrl+S"))
         self.File_Exit.setText(_translate("MainWindow", "Exit"))
         self.actionEnter_FP_Data.setText(_translate("MainWindow", "Enter FP Data"))
+
+        ##
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
 
 
 if __name__ == "__main__":
