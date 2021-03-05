@@ -3,7 +3,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_Dialog(object):
     def __init__(self):
-        self.result = 0
+        self.result = (50, "Visual Basic")
 
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")

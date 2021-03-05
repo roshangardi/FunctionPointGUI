@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from NewprojectPack import SE_newproject
 from FP_Dialog import SE_FP_dialog
 from Duplicate_tab_UI import SE_tab_duplicate
+from PyQt5.QtCore import QSettings, QPoint
 
 
 class Ui_MainWindow(object):

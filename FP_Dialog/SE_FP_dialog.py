@@ -2,6 +2,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_Dialog(object):
+    def __init__(self):
+        self.fp_name = "New Tab"
+
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(390, 158)

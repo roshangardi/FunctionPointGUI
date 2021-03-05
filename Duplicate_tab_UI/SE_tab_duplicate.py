@@ -8,6 +8,9 @@ class Ui_Form(object):
     def __init__(self):
         self.displaylang_result = 50
         self.lang = "Visual Basic"
+        self.totalcount = 0
+        self.vaf_value = 0
+        self.fp = 0
 
     def setupUi(self, Form, fpname):
         Form.setObjectName("Form")
