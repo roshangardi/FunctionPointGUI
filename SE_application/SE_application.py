@@ -1,23 +1,19 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from NewprojectPack import SE_newproject
 from FP_Dialog import SE_FP_dialog
-from TabUI import SE_tab
 from Duplicate_tab_UI import SE_tab_duplicate
 
 
 class Ui_MainWindow(object):
     def __init__(self):
+        self.projname_value = "CECS 543 Metrics Suite"
         self.displaylang_result = 50
         self.lang = "Visual Basic"
         self.tabs_list = []
 
     def setupUi(self, MainWindow):
-        self.displaylang_result = 50
-        self.lang = "Visual Basic"
-        self.tabs_list = []
-
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(642, 596)
+        MainWindow.resize(680, 650)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         MainWindow.setCentralWidget(self.centralwidget)
@@ -83,7 +79,6 @@ class Ui_MainWindow(object):
         self.tab.setObjectName("tab")
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
-        # self.EO_Label = QtWidgets.QLabel(self.tab)
         self.tab_array = []
 
         ################
@@ -101,25 +96,8 @@ class Ui_MainWindow(object):
         self.tabWidget.removeTab(index)
 
     def exiter(self):
-        print("I'm exiting")
+        print("Good Bye")
         sys.exit()
-
-    # def addtab(self):
-    #     self.Dialog2 = QtWidgets.QDialog()
-    #     self.fpdia = SE_FP_dialog.Ui_Dialog()
-    #     self.fpdia.setupUi(self.Dialog2)
-    #     self.Dialog2.show()
-    #     self.response = self.Dialog2.exec_()
-    #
-    #     if self.response == QtWidgets.QDialog.Accepted:
-    #         self.fp_dialog = self.fpdia.getfp_name()
-    #         Form = QtWidgets.QWidget()
-    #         self.fpobj = SE_tab_duplicate.Ui_Form()
-    #         self.fpobj.setupUi(Form,self.fp_dialog)
-    #         self.tabs_list.append(self.fpobj)
-    #         self.tabWidget.addTab(Form, self.fp_dialog)
-    #         self.tabWidget.setCurrentIndex(self.tabWidget.count() - 1)
-    #         _translate = QtCore.QCoreApplication.translate
 
     def displayfp(self):
         self.Dialog2 = QtWidgets.QDialog()
@@ -131,16 +109,12 @@ class Ui_MainWindow(object):
         if self.response == QtWidgets.QDialog.Accepted:
             self.widgetobject = QtWidgets.QWidget()
             self.fp_dialog = self.fpdia.getfp_name()
-            # self.fpobj = SE_tab_duplicate.Ui_Form()
-            # self.fpobj.setupUi(self.widgetobject,self.fp_dialog)
             Form = QtWidgets.QWidget()
             self.fpobj = SE_tab_duplicate.Ui_Form()
             self.fpobj.setupUi(Form, self.fp_dialog)
             self.tabs_list.append(self.fpobj)
             self.tabWidget.addTab(Form, self.fp_dialog)
             self.tabWidget.setCurrentIndex(self.tabWidget.count() - 1)
-            _translate = QtCore.QCoreApplication.translate
-
 
     def newprojdialog(self):
         self.Dialog = QtWidgets.QDialog()
@@ -155,7 +129,9 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", self.projname_value))
+        MainWindow.setWindowIcon(QtGui.QIcon(r"C:\Users\rosha\PycharmProjects\FunctionPointGUIprogram\Static"
+                                             r"\metrics.png"))
         self.Menu_file.setTitle(_translate("MainWindow", "File"))
         self.Menu_edit.setTitle(_translate("MainWindow", "Edit"))
         self.Menu_preferences.setTitle(_translate("MainWindow", "Preferences"))

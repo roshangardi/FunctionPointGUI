@@ -106,7 +106,9 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "Language Selector"))
+        Dialog.setWindowIcon(QtGui.QIcon(r"C:\Users\rosha\PycharmProjects\FunctionPointGUIprogram\Static"
+                                             r"\metrics.png"))
         self.assembler_radio_btn.setText(_translate("Dialog", "Assembler"))
         self.assembler_radio_btn.toggled.connect(lambda: self.calculate_lang())
         self.ada_radio_btn.setText(_translate("Dialog", "Ada 95"))

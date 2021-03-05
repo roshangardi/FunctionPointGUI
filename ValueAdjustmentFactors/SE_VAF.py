@@ -262,6 +262,8 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Value Adjustment Factors"))
+        Dialog.setWindowIcon(QtGui.QIcon(r"C:\Users\rosha\PycharmProjects\FunctionPointGUIprogram\Static"
+                                             r"\metrics.png"))
         self.label.setText(
             _translate("Dialog", "Assign a value from 0 to 5 for each of the following Value Adjustment Factors:"))
         self.label_4.setText(_translate("Dialog", "Does the system require reliable backup and recovery processes?"))

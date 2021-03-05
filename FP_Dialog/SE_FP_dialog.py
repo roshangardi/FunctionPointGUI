@@ -37,7 +37,9 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "FP_Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "Name your FP"))
+        Dialog.setWindowIcon(QtGui.QIcon(r"C:\Users\rosha\PycharmProjects\FunctionPointGUIprogram\Static"
+                                             r"\metrics.png"))
         self.label.setText(_translate("Dialog", "Name of this FP:"))
 
 

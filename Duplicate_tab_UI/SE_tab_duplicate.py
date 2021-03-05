@@ -1,6 +1,4 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-
-from FP_Dialog import SE_FP_dialog
 from SelectLangPack import SE_select_language
 from ValueAdjustmentFactors import SE_VAF
 from decimal import Decimal
@@ -349,21 +347,6 @@ class Ui_Form(object):
         self.CodeSize_Label_2.setText(str(self.displaylang_result * int(self.fp)))
         self.Language_Label_2.setText(self.lang)
 
-    def addtab(self):
-        self.Dialog2 = QtWidgets.QDialog()
-        self.fpdia = SE_FP_dialog.Ui_Dialog()
-        self.fpdia.setupUi(self.Dialog2)
-        self.Dialog2.show()
-        self.response = self.Dialog2.exec_()
-
-        if self.response == QtWidgets.QDialog.Accepted:
-            self.fp_dialog = self.fpdia.getfp_name()
-            Form = QtWidgets.QWidget()
-            self.fpobj = Ui_Form()
-            self.fpobj.setupUi(Form)
-            self.tabWidget.addTab(Form, self.fp_dialog)
-            self.tabWidget.setCurrentIndex(self.tabWidget.count()-1)
-            _translate = QtCore.QCoreApplication.translate
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -388,7 +371,7 @@ class Ui_Form(object):
         self.radioButton_22.setText(_translate("Form", "3"))
         self.radioButton_23.setText(_translate("Form", "4"))
         self.radioButton_24.setText(_translate("Form", "6"))
-        self.Language_Label_2.setText(_translate("Form", "Python"))
+        self.Language_Label_2.setText(_translate("Form", "Visual Basic"))
         self.label_18.setText(_translate("Form", "Ext Interface Files"))
         self.radioButton_25.setText(_translate("Form", "5"))
         self.radioButton_26.setText(_translate("Form", "7"))
@@ -420,6 +403,6 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
     ui = Ui_Form()
-    ui.setupUi(Form)
+    ui.setupUi(Form,"First")
     Form.show()
     sys.exit(app.exec_())

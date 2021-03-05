@@ -94,6 +94,8 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "New Project"))
+        Dialog.setWindowIcon(QtGui.QIcon(r"C:\Users\rosha\PycharmProjects\FunctionPointGUIprogram\Static"
+                                             r"\metrics.png"))
         self.label.setText(_translate("Dialog", "CECS 543 Metrics Suite New Project"))
         self.projectname_label.setText(_translate("Dialog", "Project Name"))
         self.productname_label.setText(_translate("Dialog", "Product Name"))
