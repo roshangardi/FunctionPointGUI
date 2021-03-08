@@ -2,6 +2,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_Dialog(object):
+    def __init__(self):
+        self.project_name = ""
+
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(653, 568)
@@ -53,6 +56,7 @@ class Ui_Dialog(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.projectname_lineEdit = QtWidgets.QLineEdit(self.verticalLayoutWidget_2)
         self.projectname_lineEdit.setObjectName("projectname_lineEdit")
+        self.projectname_lineEdit.setFocus()
         self.verticalLayout_2.addWidget(self.projectname_lineEdit)
         self.productname_lineEdit = QtWidgets.QLineEdit(self.verticalLayoutWidget_2)
         self.productname_lineEdit.setObjectName("productname_lineEdit")

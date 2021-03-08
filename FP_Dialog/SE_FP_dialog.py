@@ -22,6 +22,7 @@ class Ui_Dialog(object):
         self.name_of_fp_lineEdit = QtWidgets.QLineEdit(Dialog)
         self.name_of_fp_lineEdit.setGeometry(QtCore.QRect(60, 50, 281, 21))
         self.name_of_fp_lineEdit.setObjectName("name_of_fp_lineEdit")
+        self.name_of_fp_lineEdit.setFocus()
 
         self.retranslateUi(Dialog)
         self.buttonBox.accepted.connect(Dialog.accept)

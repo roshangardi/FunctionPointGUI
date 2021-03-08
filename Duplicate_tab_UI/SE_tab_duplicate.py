@@ -82,6 +82,11 @@ class Ui_Form(object):
         font.setPointSize(12)
         self.EI_Label_2.setFont(font)
         self.EI_Label_2.setObjectName("EI_Label_2")
+        self.Error_Label = QtWidgets.QLabel(Form)
+        self.Error_Label.setGeometry(QtCore.QRect(200, 340, 371, 31))
+        self.Error_Label.setFont(font)
+        self.Error_Label.setObjectName("Error_Label")
+        self.Error_Label.setText("")
         self.horizontalLayoutWidget_7 = QtWidgets.QWidget(Form)
         self.horizontalLayoutWidget_7.setGeometry(QtCore.QRect(10, 240, 521, 31))
         self.horizontalLayoutWidget_7.setObjectName("horizontalLayoutWidget_7")
@@ -268,6 +273,17 @@ class Ui_Form(object):
 
     def calculatefp(self):
         self.choice = 0
+        try:
+            if int(self.EI_lineedit_2.text()) < 0 or int(self.EO_lineedit_2.text()) < 0 or int(self.EInq_lineedit_2.text()) < 0 or int(self.ILF_lineedit_2.text()) < 0 or int(self.EIF_lineedit_2.text()) < 0:
+                self.Error_Label.setText("Enter positive numbers only!")
+                self.Error_Label.setStyleSheet("color: red")
+                return
+        except:
+            self.Error_Label.setText("Enter numbers only!")
+            self.Error_Label.setStyleSheet("color: red")
+            return
+
+        self.Error_Label.setText("")
         self.ei = int(self.EI_lineedit_2.text())
         if self.radioButton_28.isChecked():
             self.choice = 3
@@ -382,7 +398,7 @@ class Ui_Form(object):
         self.computefp_btn_2.setText(_translate("Form", "Compute FP"))
         self.vaf_btn_2.setText(_translate("Form", "Value Adjustments"))
         self.codesize_btn_2.setText(_translate("Form", "Compute Code Size"))
-        self.chooselang_btn_2.setText(_translate("Form", "Choose Language"))
+        self.chooselang_btn_2.setText(_translate("Form", "Change Language"))
         self.CodeSize_Label_2.setText(_translate("Form", "0"))
         self.label_19.setText(_translate("Form", "Current Language"))
         self.label_20.setText(_translate("Form", "Total Count"))
