@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QFont
 import SE_newproject, SE_FP_dialog, SE_tab_duplicate
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QToolTip
 import inspect, pickle
 
 
@@ -12,6 +13,7 @@ class Ui_MainWindow(object):
         self.lang = "Visual Basic"
         self.tabs_list = []
         self.saveresults = {}
+        QToolTip.setFont(QFont('SansSerif', 10))
 
     def save_file(self):
         saveDialog = QFileDialog()
@@ -48,10 +50,12 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
+
         self.menubar.setGeometry(QtCore.QRect(0, 0, 642, 21))
         self.menubar.setObjectName("menubar")
         self.Menu_file = QtWidgets.QMenu(self.menubar)
         self.Menu_file.setObjectName("Menu_file")
+        self.Menu_file.setToolTipsVisible(True)
         self.Menu_edit = QtWidgets.QMenu(self.menubar)
         self.Menu_edit.setObjectName("Menu_edit")
         self.Menu_preferences = QtWidgets.QMenu(self.menubar)
@@ -60,6 +64,7 @@ class Ui_MainWindow(object):
         self.Menu_metrics.setObjectName("Menu_metrics")
         self.menuFunction_Point = QtWidgets.QMenu(self.Menu_metrics)
         self.menuFunction_Point.setObjectName("menuFunction_Point")
+        self.menuFunction_Point.setToolTipsVisible(True)
         self.Menu_Project_code = QtWidgets.QMenu(self.menubar)
         self.Menu_Project_code.setObjectName("Menu_Project_code")
         self.Menu_Help = QtWidgets.QMenu(self.menubar)
@@ -113,11 +118,15 @@ class Ui_MainWindow(object):
         self.tab.setObjectName("tab")
         self.tab_array = []
         self.actionEnter_FP_Data.triggered.connect(self.displayfp)
+        self.actionEnter_FP_Data.setToolTip("This is a widget")
+        self.File_new.setToolTip("Tooltip message")
         self.File_new.triggered.connect(lambda: self.newprojdialog(MainWindow))
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget.tabCloseRequested.connect(self.tab_closer)
         self.File_Save.triggered.connect(lambda: self.save_file())
+        self.File_Save.setToolTip("Create New project to save")
         self.File_Open.triggered.connect(lambda: self.open_file())
+        self.actionEnter_FP_Data.setToolTip("Create project before FP")
         # comment end
 
         self.retranslateUi(MainWindow)
