@@ -7,8 +7,8 @@ class Ui_Form(object):
     counter = 0
 
     def __init__(self, saved_dict):
-        self.displaylang_result = 50
-        self.lang = "Visual Basic"
+        self.displaylang_result = 0
+        self.lang = "None"
         self.totalcount = 0
         self.vaf_value = 0
         self.fp = 0
@@ -274,51 +274,6 @@ class Ui_Form(object):
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
-    def restore_data(self):
-        self.EI_lineedit_2.setText(self.new_dict["EI_lineedit"])
-        self.EO_lineedit_2.setText(self.new_dict["EO_lineedit"])
-        self.EInq_lineedit_2.setText(self.new_dict["EInq_lineedit"])
-        self.ILF_lineedit_2.setText(self.new_dict["ILF_lineedit"])
-        self.EIF_lineedit_2.setText(self.new_dict["EIF_lineedit"])
-        self.EI_Label_2.setText(str(self.new_dict["EI_Label"]))
-        self.EO_Label_2.setText(self.new_dict["EO_Label"])
-        self.EInq_Label_2.setText(self.new_dict["EInq_Label"])
-        self.ILF_Label_2.setText(self.new_dict["ILF_Label"])
-        self.EIF_Label_2.setText(self.new_dict["EIF_Label"])
-        self.TC_Label_2.setText(self.new_dict["TC_Label"])
-        self.FP_Label_2.setText(self.new_dict["FP_Label"])
-        self.VAF_Label_2.setText(self.new_dict["VAF_Label"])
-        self.CodeSize_Label_2.setText(self.new_dict["CodeSize_Label"])
-        ##
-        if "radioButton_28" in self.new_dict:
-            self.radioButton_28.setChecked(True)
-        if "radioButton_29" in self.new_dict:
-            self.radioButton_29.setChecked(True)
-        if "radioButton_30" in self.new_dict:
-            self.radioButton_30.setChecked(True)
-        if "radioButton_17" in self.new_dict:
-            self.radioButton_17.setChecked(True)
-        if "radioButton_18" in self.new_dict:
-            self.radioButton_18.setChecked(True)
-        if "radioButton_22" in self.new_dict:
-            self.radioButton_22.setChecked(True)
-        if "radioButton_23" in self.new_dict:
-            self.radioButton_23.setChecked(True)
-        if "radioButton_24" in self.new_dict:
-            self.radioButton_24.setChecked(True)
-        if "radioButton_19" in self.new_dict:
-            self.radioButton_19.setChecked(True)
-        if "radioButton_20" in self.new_dict:
-            self.radioButton_20.setChecked(True)
-        if "radioButton_21" in self.new_dict:
-            self.radioButton_21.setChecked(True)
-        if "radioButton_25" in self.new_dict:
-            self.radioButton_25.setChecked(True)
-        if "radioButton_26" in self.new_dict:
-            self.radioButton_26.setChecked(True)
-        if "radioButton_27" in self.new_dict:
-            self.radioButton_27.setChecked(True)
-
     def calculatefp(self):
         self.choice = 0
         try:
@@ -465,8 +420,93 @@ class Ui_Form(object):
         if self.radioButton_27.isChecked():
             self.new_dict["radioButton_27"] = True
         ##
-        print(self.new_dict)
+        self.new_dict["language"] = self.Language_Label_2.text()
+        ##
         return self.new_dict
+
+    def restore_data(self):
+        self.EI_lineedit_2.setText(self.new_dict["EI_lineedit"])
+        self.EO_lineedit_2.setText(self.new_dict["EO_lineedit"])
+        self.EInq_lineedit_2.setText(self.new_dict["EInq_lineedit"])
+        self.ILF_lineedit_2.setText(self.new_dict["ILF_lineedit"])
+        self.EIF_lineedit_2.setText(self.new_dict["EIF_lineedit"])
+        self.EI_Label_2.setText(str(self.new_dict["EI_Label"]))
+        self.EO_Label_2.setText(self.new_dict["EO_Label"])
+        self.EInq_Label_2.setText(self.new_dict["EInq_Label"])
+        self.ILF_Label_2.setText(self.new_dict["ILF_Label"])
+        self.EIF_Label_2.setText(self.new_dict["EIF_Label"])
+        self.TC_Label_2.setText(self.new_dict["TC_Label"])
+        self.FP_Label_2.setText(self.new_dict["FP_Label"])
+        self.VAF_Label_2.setText(self.new_dict["VAF_Label"])
+        self.CodeSize_Label_2.setText(self.new_dict["CodeSize_Label"])
+        ##
+        if "radioButton_28" in self.new_dict:
+            self.radioButton_28.setChecked(True)
+        if "radioButton_29" in self.new_dict:
+            self.radioButton_29.setChecked(True)
+        if "radioButton_30" in self.new_dict:
+            self.radioButton_30.setChecked(True)
+        if "radioButton_16" in self.new_dict:
+            self.radioButton_16.setChecked(True)
+        if "radioButton_17" in self.new_dict:
+            self.radioButton_17.setChecked(True)
+        if "radioButton_18" in self.new_dict:
+            self.radioButton_18.setChecked(True)
+        if "radioButton_22" in self.new_dict:
+            self.radioButton_22.setChecked(True)
+        if "radioButton_23" in self.new_dict:
+            self.radioButton_23.setChecked(True)
+        if "radioButton_24" in self.new_dict:
+            self.radioButton_24.setChecked(True)
+        if "radioButton_19" in self.new_dict:
+            self.radioButton_19.setChecked(True)
+        if "radioButton_20" in self.new_dict:
+            self.radioButton_20.setChecked(True)
+        if "radioButton_21" in self.new_dict:
+            self.radioButton_21.setChecked(True)
+        if "radioButton_25" in self.new_dict:
+            self.radioButton_25.setChecked(True)
+        if "radioButton_26" in self.new_dict:
+            self.radioButton_26.setChecked(True)
+        if "radioButton_27" in self.new_dict:
+            self.radioButton_27.setChecked(True)
+        #
+        if self.new_dict["language"] == "Assembler":
+            self.displaylang_result, self.lang = (337, "Assembler")
+            self.Language_Label_2.setText("Assembler")
+        elif self.new_dict["language"] == "ADA":
+            self.displaylang_result, self.lang = (154, "ADA")
+            self.Language_Label_2.setText("ADA")
+        elif self.new_dict["language"] == "C":
+            self.displaylang_result, self.lang = (148,"C")
+            self.Language_Label_2.setText("C")
+        elif self.new_dict["language"] == "C++":
+            self.displaylang_result, self.lang = (59, "C++")
+            self.Language_Label_2.setText("C++")
+        elif self.new_dict["language"] == "C#":
+            self.displaylang_result, self.lang = (58, "C#")
+            self.Language_Label_2.setText("C#")
+        elif self.new_dict["language"] == "COBOL":
+            self.displaylang_result, self.lang = (80, "COBOL")
+            self.Language_Label_2.setText("COBOL")
+        if self.new_dict["language"] == "FORTRAN":
+            self.displaylang_result, self.lang = (90, "FORTRAN")
+            self.Language_Label_2.setText("FORTRAN")
+        elif self.new_dict["language"] == "HTML":
+            self.displaylang_result, self.lang = (43, "HTML")
+            self.Language_Label_2.setText("HTML")
+        elif self.new_dict["language"] == "Java":
+            self.displaylang_result, self.lang = (55, "Java")
+            self.Language_Label_2.setText("Java")
+        elif self.new_dict["language"] == "JavaScript":
+            self.displaylang_result, self.lang = (54, "JavaScript")
+            self.Language_Label_2.setText("JavaScript")
+        elif self.new_dict["language"] == "VB Script":
+            self.displaylang_result, self.lang = (38, "VB Script")
+            self.Language_Label_2.setText("VB Script")
+        elif self.new_dict["language"] == "Visual Basic":
+            self.displaylang_result, self.lang = (50, "Visual Basic")
+            self.Language_Label_2.setText("Visual Basic")
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -491,7 +531,7 @@ class Ui_Form(object):
         self.radioButton_22.setText(_translate("Form", "3"))
         self.radioButton_23.setText(_translate("Form", "4"))
         self.radioButton_24.setText(_translate("Form", "6"))
-        self.Language_Label_2.setText(_translate("Form", "Visual Basic"))
+        self.Language_Label_2.setText(_translate("Form", "None"))
         self.label_18.setText(_translate("Form", "Ext Interface Files"))
         self.radioButton_25.setText(_translate("Form", "5"))
         self.radioButton_26.setText(_translate("Form", "7"))
