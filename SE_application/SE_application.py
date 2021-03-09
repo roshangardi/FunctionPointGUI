@@ -1,123 +1,45 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from NewprojectPack import SE_newproject
-from FP_Dialog import SE_FP_dialog
-from Duplicate_tab_UI import SE_tab_duplicate
-from PyQt5.QtCore import QSettings, QPoint
+import SE_newproject, SE_FP_dialog, SE_tab_duplicate
 from PyQt5.QtWidgets import QFileDialog
-import inspect
-
-
-def restore(obje, settings):
-    for name, obj in inspect.getmembers(obje):
-        if isinstance(obj, QtWidgets.QComboBox):
-            index = obj.currentIndex()  # get current region from combobox
-            # text   = obj.itemText(index)   # get the text for new selected index
-            name = obj.objectName()
-
-            value = settings.value(name)
-
-            if value == "":
-                continue
-
-            index = obj.findText(value)  # get the corresponding index for specified string in combobox
-
-            if index == -1:  # add to list if not found
-                obj.insertItems(0, [value])
-                index = obj.findText(value)
-                obj.setCurrentIndex(index)
-            else:
-                obj.setCurrentIndex(index)  # preselect a combobox value by index
-
-        if isinstance(obj, QtWidgets.QLineEdit):
-            name = obj.objectName()
-            value = settings.value(name)  # get stored value from registry
-            obj.setText(value)  # restore lineEditFile
-
-        if isinstance(obj, QtWidgets.QCheckBox):
-            name = obj.objectName()
-            value = settings.value(name)  # get stored value from registry
-            if value != None:
-                obj.setCheckState(value)  # restore checkbox
-
-        # if isinstance(obj, QRadioButton):
-    # finfo = QtCore.QFileInfo(settings.fileName())
-    # if finfo.exists() and finfo.isFile():
-    #     print("Yes, It's a file")
-    #     for w in QtWidgets.qApp.allWidgets():
-    #         mo = w.metaObject()
-    #         if w.objectName() and not w.objectName().startswith("qt_"):
-    #             settings.beginGroup(w.objectName())
-    #             for i in range(mo.propertyCount(), mo.propertyOffset() - 1, -1):
-    #                 prop = mo.property(i)
-    #                 if prop.isWritable():
-    #                     name = prop.name()
-    #                     val = settings.value(name, w.property(name))
-    #                     if str(val).isdigit():
-    #                         val = int(val)
-    #                     w.setProperty(name, val)
-    #             settings.endGroup()
-
-
-def save(obje, settings):
-    for name, obj in inspect.getmembers(obje):
-        if isinstance(obj, QtWidgets.QComboBox):
-            name = obj.objectName()  # get combobox name
-            index = obj.currentIndex()  # get current index from combobox
-            text = obj.itemText(index)  # get the text for current index
-            settings.setValue(name, text)  # save combobox selection to registry
-
-        if isinstance(obj, QtWidgets.QLineEdit):
-            name = obj.objectName()
-            value = obj.text()
-            settings.setValue(name, value)  # save ui values, so they can be restored next time
-
-        if isinstance(obj, QtWidgets.QCheckBox):
-            name = obj.objectName()
-            state = obj.checkState()
-            settings.setValue(name, state)
-
-    # for w in QtWidgets.qApp.allWidgets():
-    #     mo = w.metaObject()
-    #     if w.objectName() and not w.objectName().startswith("qt_"):
-    #         settings.beginGroup(w.objectName())
-    #         for i in range(mo.propertyCount()):
-    #             prop = mo.property(i)
-    #             name = prop.name()
-    #             if prop.isWritable():
-    #                 settings.setValue(name, w.property(name))
-    #         settings.endGroup()
+import inspect, pickle
 
 
 class Ui_MainWindow(object):
 
     def __init__(self):
-        # self.settings = QSettings('Roshan', 'CECS_543')
         self.projname_value = "CECS 543 Metrics Suite"
         self.displaylang_result = 50
         self.lang = "Visual Basic"
         self.tabs_list = []
+        self.saveresults = {}
 
     def save_file(self):
-        option = QFileDialog.Options()
-        option |= QFileDialog.DontUseNativeDialog
-        file = QFileDialog.getSaveFileName(self.centralwidget, "Save your application status", "default.txt",
-                                           "All Files (*)", options=option)
-        print(file[0])
+        saveDialog = QFileDialog()
+        saveDialog.setWindowTitle("Save File")
+        saveDialog.setAcceptMode(QFileDialog.AcceptSave)
+        saveDialog.setNameFilter('MS Files (*.ms)')
+        saveDialog.setDefaultSuffix('ms')
+
+        savedvalue = self.fpobj.save()
+
+        if saveDialog.exec_() == QFileDialog.Accepted:
+            file_name = saveDialog.selectedFiles()
+            with open(file_name[0], 'wb') as file:
+                pickle.dump(savedvalue, file)
+            file.close()
 
     def open_file(self):
-        option = QFileDialog.Options()
-        option |= QFileDialog.DontUseNativeDialog
-        file = QFileDialog.getOpenFileName(self.centralwidget, "Open your application", "Default File", "All Files (*)",
-                                           options=option)
-        print(file)
+        openDialog = QFileDialog()
+        openDialog.setWindowTitle("Open File")
+        openDialog.setAcceptMode(QFileDialog.AcceptOpen)
+        openDialog.setNameFilter('MS File (*.ms)')
 
-    def open_multi_file(self):
-        option = QFileDialog.Options()
-        option |= QFileDialog.DontUseNativeDialog
-        file = QFileDialog.getOpenFileNames(self.centralwidget, "Open your application", "Default File",
-                                            "All Files (*)",
-                                            options=option)
-        print(file)
+        if openDialog.exec() == QFileDialog.Accepted:
+            file_name = openDialog.selectedFiles()[0]
+            with open(file_name, 'rb') as file:
+                self.saveresults = pickle.load(file)
+            self.displayfp()
+            self.fpobj.restore_data()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -125,7 +47,6 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         MainWindow.setCentralWidget(self.centralwidget)
-        # MainWindow.setStyleSheet(self.stylesheet)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 642, 21))
         self.menubar.setObjectName("menubar")
@@ -158,6 +79,7 @@ class Ui_MainWindow(object):
         self.actionEnter_FP_Data = QtWidgets.QAction(MainWindow)
         self.actionEnter_FP_Data.setObjectName("actionEnter_FP_Data")
         self.actionEnter_FP_Data.setEnabled(False)
+        self.File_Save.setEnabled(False)
         self.Menu_file.addAction(self.File_new)
         self.Menu_file.addAction(self.File_Open)
         self.Menu_file.addAction(self.File_Save)
@@ -195,11 +117,8 @@ class Ui_MainWindow(object):
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget.tabCloseRequested.connect(self.tab_closer)
         self.File_Save.triggered.connect(lambda: self.save_file())
-        self.File_Open.triggered.connect(lambda: self.open_multi_file())
+        self.File_Open.triggered.connect(lambda: self.open_file())
         # comment end
-
-        # Saving functionality
-        # Saving end
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -222,11 +141,12 @@ class Ui_MainWindow(object):
             self.widgetobject = QtWidgets.QWidget()
             self.fp_dialog = self.fpdia.getfp_name()
             Form = QtWidgets.QWidget()
-            self.fpobj = SE_tab_duplicate.Ui_Form()
+            self.fpobj = SE_tab_duplicate.Ui_Form(self.saveresults)
             self.fpobj.setupUi(Form, self.fp_dialog)
             self.tabs_list.append(self.fpobj)
             self.tabWidget.addTab(Form, self.fp_dialog)
             self.tabWidget.setCurrentIndex(self.tabWidget.count() - 1)
+            self.File_Save.setEnabled(True)
 
     def newprojdialog(self, MainWindow):
         self.Dialog = QtWidgets.QDialog()
@@ -239,11 +159,10 @@ class Ui_MainWindow(object):
             self.actionEnter_FP_Data.setEnabled(True)
             self.projname_value = self.newproj_obj.getproject_name()
             _translate = QtCore.QCoreApplication.translate
-            MainWindow.setWindowTitle(_translate("MainWindow", "CECS 543 Metrics Suite - "+self.projname_value))
+            MainWindow.setWindowTitle(_translate("MainWindow", "CECS 543 Metrics Suite - " + self.projname_value))
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        # MainWindow.setWindowTitle(_translate("MainWindow", self.projname_value))
         MainWindow.setWindowIcon(QtGui.QIcon("metrics.png"))
         self.Menu_file.setTitle(_translate("MainWindow", "File"))
         self.Menu_edit.setTitle(_translate("MainWindow", "Edit"))
@@ -261,6 +180,7 @@ class Ui_MainWindow(object):
         self.File_Save.setShortcut(_translate("MainWindow", "Ctrl+S"))
         self.File_Exit.setText(_translate("MainWindow", "Exit"))
         self.actionEnter_FP_Data.setText(_translate("MainWindow", "Enter FP Data"))
+        self.actionEnter_FP_Data.setShortcut(_translate("MainWindow", "Ctrl+F"))
         ##
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
 
@@ -269,21 +189,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
-        self.settings = QtCore.QSettings()
-        restore(self, self.settings)
-        print(self.settings.fileName())
 
     def closeEvent(self, event):
-        save(self, self.settings)
         super().closeEvent(event)
 
 
 if __name__ == "__main__":
     import sys
-
     app = QtWidgets.QApplication(sys.argv)
     QtCore.QCoreApplication.setOrganizationName("Roshan")
-    # QtCore.QCoreApplication.setOrganizationDomain("abc.com")
     QtCore.QCoreApplication.setApplicationName("CECS 543 Metrics Suite")
     w = MainWindow()
     w.show()
