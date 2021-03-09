@@ -289,6 +289,35 @@ class Ui_Form(object):
         self.FP_Label_2.setText(self.new_dict["FP_Label"])
         self.VAF_Label_2.setText(self.new_dict["VAF_Label"])
         self.CodeSize_Label_2.setText(self.new_dict["CodeSize_Label"])
+        ##
+        if "radioButton_28" in self.new_dict:
+            self.radioButton_28.setChecked(True)
+        if "radioButton_29" in self.new_dict:
+            self.radioButton_29.setChecked(True)
+        if "radioButton_30" in self.new_dict:
+            self.radioButton_30.setChecked(True)
+        if "radioButton_17" in self.new_dict:
+            self.radioButton_17.setChecked(True)
+        if "radioButton_18" in self.new_dict:
+            self.radioButton_18.setChecked(True)
+        if "radioButton_22" in self.new_dict:
+            self.radioButton_22.setChecked(True)
+        if "radioButton_23" in self.new_dict:
+            self.radioButton_23.setChecked(True)
+        if "radioButton_24" in self.new_dict:
+            self.radioButton_24.setChecked(True)
+        if "radioButton_19" in self.new_dict:
+            self.radioButton_19.setChecked(True)
+        if "radioButton_20" in self.new_dict:
+            self.radioButton_20.setChecked(True)
+        if "radioButton_21" in self.new_dict:
+            self.radioButton_21.setChecked(True)
+        if "radioButton_25" in self.new_dict:
+            self.radioButton_25.setChecked(True)
+        if "radioButton_26" in self.new_dict:
+            self.radioButton_26.setChecked(True)
+        if "radioButton_27" in self.new_dict:
+            self.radioButton_27.setChecked(True)
 
     def calculatefp(self):
         self.choice = 0
@@ -404,6 +433,39 @@ class Ui_Form(object):
         self.new_dict["FP_Label"] = self.FP_Label_2.text()
         self.new_dict["VAF_Label"] = self.VAF_Label_2.text()
         self.new_dict["CodeSize_Label"] = self.CodeSize_Label_2.text()
+        ##
+        if self.radioButton_28.isChecked():
+            self.new_dict["radioButton_28"] = True
+        if self.radioButton_29.isChecked():
+            self.new_dict["radioButton_29"] = True
+        if self.radioButton_30.isChecked():
+            self.new_dict["radioButton_30"] = True
+        if self.radioButton_16.isChecked():
+            self.new_dict["radioButton_16"] = True
+        if self.radioButton_17.isChecked():
+            self.new_dict["radioButton_17"] = True
+        if self.radioButton_18.isChecked():
+            self.new_dict["radioButton_18"] = True
+        if self.radioButton_22.isChecked():
+            self.new_dict["radioButton_22"] = True
+        if self.radioButton_23.isChecked():
+            self.new_dict["radioButton_23"] = True
+        if self.radioButton_24.isChecked():
+            self.new_dict["radioButton_24"] = True
+        if self.radioButton_19.isChecked():
+            self.new_dict["radioButton_19"] = True
+        if self.radioButton_20.isChecked():
+            self.new_dict["radioButton_20"] = True
+        if self.radioButton_21.isChecked():
+            self.new_dict["radioButton_21"] = True
+        if self.radioButton_25.isChecked():
+            self.new_dict["radioButton_25"] = True
+        if self.radioButton_26.isChecked():
+            self.new_dict["radioButton_26"] = True
+        if self.radioButton_27.isChecked():
+            self.new_dict["radioButton_27"] = True
+        ##
+        print(self.new_dict)
         return self.new_dict
 
     def retranslateUi(self, Form):
