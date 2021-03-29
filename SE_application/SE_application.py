@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QFont
-import SE_newproject, SE_FP_dialog, SE_tab_duplicate
+import SE_newproject, SE_common_dialog, SE_functionPoint, SE_UCP
 from PyQt5.QtWidgets import QFileDialog, QToolTip
 import inspect, pickle
 
@@ -45,7 +45,7 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(680, 650)
+        MainWindow.resize(800, 650)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         MainWindow.setCentralWidget(self.centralwidget)
@@ -65,6 +65,11 @@ class Ui_MainWindow(object):
         self.menuFunction_Point = QtWidgets.QMenu(self.Menu_metrics)
         self.menuFunction_Point.setObjectName("menuFunction_Point")
         self.menuFunction_Point.setToolTipsVisible(True)
+
+        self.menuUCP_Point = QtWidgets.QMenu(self.Menu_metrics)
+        self.menuUCP_Point.setObjectName("menuUCP_Point")
+        self.menuUCP_Point.setToolTipsVisible(True)
+
         self.Menu_Project_code = QtWidgets.QMenu(self.menubar)
         self.Menu_Project_code.setObjectName("Menu_Project_code")
         self.Menu_Help = QtWidgets.QMenu(self.menubar)
@@ -84,6 +89,11 @@ class Ui_MainWindow(object):
         self.actionEnter_FP_Data = QtWidgets.QAction(MainWindow)
         self.actionEnter_FP_Data.setObjectName("actionEnter_FP_Data")
         self.actionEnter_FP_Data.setEnabled(False)
+
+        self.UCP_action = QtWidgets.QAction(MainWindow)
+        self.UCP_action.setObjectName("UCP_action")
+        # self.UCP_action.setEnabled(False)
+
         self.File_Save.setEnabled(False)
         self.Menu_file.addAction(self.File_new)
         self.Menu_file.addAction(self.File_Open)
@@ -91,6 +101,10 @@ class Ui_MainWindow(object):
         self.Menu_file.addAction(self.File_Exit)
         self.menuFunction_Point.addAction(self.actionEnter_FP_Data)
         self.Menu_metrics.addAction(self.menuFunction_Point.menuAction())
+
+        self.menuUCP_Point.addAction(self.UCP_action)
+        self.Menu_metrics.addAction(self.menuUCP_Point.menuAction())
+
         self.menubar.addAction(self.Menu_file.menuAction())
         self.menubar.addAction(self.Menu_edit.menuAction())
         self.menubar.addAction(self.Menu_preferences.menuAction())
@@ -103,7 +117,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(8)
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
-        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 751, 641))
+        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 900, 641))
         self.tabWidget.setFont(font)
         self.tabWidget.setMouseTracking(False)
         self.tabWidget.setAutoFillBackground(True)
@@ -118,6 +132,9 @@ class Ui_MainWindow(object):
         self.tab.setObjectName("tab")
         self.tab_array = []
         self.actionEnter_FP_Data.triggered.connect(self.displayfp)
+
+        self.UCP_action.triggered.connect(self.displayUCP)
+
         self.actionEnter_FP_Data.setToolTip("This is a widget")
         self.File_new.setToolTip("Tooltip message")
         self.File_new.triggered.connect(lambda: self.newprojdialog(MainWindow))
@@ -139,9 +156,28 @@ class Ui_MainWindow(object):
         print("Good Bye")
         sys.exit()
 
+    def displayUCP(self):
+        Dialog3 = QtWidgets.QDialog()
+        self.uc_dialog = SE_common_dialog.Ui_Dialog()
+        self.uc_dialog.setupUi(Dialog3)
+        Dialog3.show()
+        self.response = Dialog3.exec_()
+
+        if self.response == QtWidgets.QDialog.Accepted:
+            self.widgetobject = QtWidgets.QWidget()
+            self.u_dialog = self.uc_dialog.getfp_name()
+            Form = QtWidgets.QWidget()
+            SE_UCP.Ui_Form()
+            self.ucpobj = SE_UCP.Ui_Form()
+            self.ucpobj.setupUi(Form, self.u_dialog)
+            self.tabs_list.append(self.ucpobj)
+            self.tabWidget.addTab(Form, self.u_dialog)
+            self.tabWidget.setCurrentIndex(self.tabWidget.count() - 1)
+            self.File_Save.setEnabled(True)
+
     def displayfp(self):
         self.Dialog2 = QtWidgets.QDialog()
-        self.fpdia = SE_FP_dialog.Ui_Dialog()
+        self.fpdia = SE_common_dialog.Ui_Dialog()
         self.fpdia.setupUi(self.Dialog2)
         self.Dialog2.show()
         self.response = self.Dialog2.exec_()
@@ -150,7 +186,7 @@ class Ui_MainWindow(object):
             self.widgetobject = QtWidgets.QWidget()
             self.fp_dialog = self.fpdia.getfp_name()
             Form = QtWidgets.QWidget()
-            self.fpobj = SE_tab_duplicate.Ui_Form(self.saveresults)
+            self.fpobj = SE_functionPoint.Ui_Form(self.saveresults)
             self.fpobj.setupUi(Form, self.fp_dialog)
             self.tabs_list.append(self.fpobj)
             self.tabWidget.addTab(Form, self.fp_dialog)
@@ -178,6 +214,7 @@ class Ui_MainWindow(object):
         self.Menu_preferences.setTitle(_translate("MainWindow", "Preferences"))
         self.Menu_metrics.setTitle(_translate("MainWindow", "Metrics"))
         self.menuFunction_Point.setTitle(_translate("MainWindow", "Function Point"))
+        self.menuUCP_Point.setTitle(_translate("MainWindow", "UCP Point"))
         self.Menu_Project_code.setTitle(_translate("MainWindow", "Project code"))
         self.Menu_Help.setTitle(_translate("MainWindow", "Help"))
         self.File_new.setText(_translate("MainWindow", "New"))
@@ -190,6 +227,9 @@ class Ui_MainWindow(object):
         self.File_Exit.setText(_translate("MainWindow", "Exit"))
         self.actionEnter_FP_Data.setText(_translate("MainWindow", "Enter FP Data"))
         self.actionEnter_FP_Data.setShortcut(_translate("MainWindow", "Ctrl+F"))
+
+        self.UCP_action.setText(_translate("MainWindow", "Calculate UCP"))
+        self.UCP_action.setShortcut(_translate("MainWindow", "Ctrl+P"))
         ##
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
 
