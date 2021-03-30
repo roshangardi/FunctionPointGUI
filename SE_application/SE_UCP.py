@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-import SE_TCF_Dialog, SE_ECF_Dialog
+import SE_TCF_Dialog, SE_ECF_Dialog, SE_UUCP
 
 
 class Ui_Form(object):
@@ -185,6 +185,7 @@ class Ui_Form(object):
         ##
         self.computefp_btn_2.clicked.connect(self.tcfdialog)
         self.vaf_btn_2.clicked.connect(self.ecfdialog)
+        self.codesize_btn_2.clicked.connect(self.uucp)
         ##
 
         self.retranslateUi(Form)
@@ -209,6 +210,16 @@ class Ui_Form(object):
 
         if self.response == QtWidgets.QDialog.Accepted:
             self.CodeSize_Label_3.setText(str(self.ecf_obj.get_ecf_value()))
+
+    def uucp(self):
+        self.uucp_Dialog = QtWidgets.QDialog()
+        self.uucp_obj = SE_UUCP.Ui_Dialog()
+        self.uucp_obj.setupUi(self.uucp_Dialog)
+        self.uucp_Dialog.show()
+        self.response = self.uucp_Dialog.exec_()
+
+        if self.response == QtWidgets.QDialog.Accepted:
+            self.CodeSize_Label_4.setText(str(self.uucp_obj.get_uucp_value()))
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
