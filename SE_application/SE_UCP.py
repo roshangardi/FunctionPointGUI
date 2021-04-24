@@ -1,8 +1,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-import SE_TCF_Dialog, SE_ECF_Dialog, SE_UUCP
+import SE_TCF_Dialog, SE_ECF_Dialog, SE_UUCP, decimal
 
 
-class Ui_Form(object):
+class UCP_Ui_Form(object):
+    def __init__(self, saved_dict):
+        self.new_dict = saved_dict
+        # print("initialized new dict {}".format(self.new_dict))
+
     def setupUi(self, Form, ucpname):
         Form.setObjectName("Form")
         Form.resize(767, 607)
@@ -186,10 +190,21 @@ class Ui_Form(object):
         self.computefp_btn_2.clicked.connect(self.tcfdialog)
         self.vaf_btn_2.clicked.connect(self.ecfdialog)
         self.codesize_btn_2.clicked.connect(self.uucp)
+        self.chooselang_btn_2.clicked.connect(self.ucp)
         ##
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def ucp(self):
+        self.ucp_result = float(self.CodeSize_Label_2.text()) * float(self.CodeSize_Label_3.text()) * float(
+            self.CodeSize_Label_4.text()) * float(self.EI_lineedit_2.text())
+        self.ucp_result = round(decimal.Decimal(self.ucp_result), 2)
+        self.ILF_lineedit_2.setText(str(self.ucp_result))
+
+        self.ILF_lineedit_4.setText(str(round(float(self.ucp_result) * float(self.EInq_lineedit_2.text()), 2)))
+        self.ILF_lineedit_5.setText(str(round(float(self.ILF_lineedit_4.text()) / float(self.EO_lineedit_2.text()), 2)))
+        self.ILF_lineedit_3.setText(str(round(float(self.ILF_lineedit_5.text()) * 160, 2)))
 
     def tcfdialog(self):
         self.tcf_Dialog = QtWidgets.QDialog()
@@ -221,6 +236,36 @@ class Ui_Form(object):
         if self.response == QtWidgets.QDialog.Accepted:
             self.CodeSize_Label_4.setText(str(self.uucp_obj.get_uucp_value()))
 
+    def save(self):
+        # print("UCP new dict contains {}".format(self.new_dict))
+        self.new_dict={}
+        self.new_dict["TCP_calculation"] = self.CodeSize_Label_2.text()
+        self.new_dict["ECF_calculation"] = self.CodeSize_Label_3.text()
+        self.new_dict["UUCP_calculation"] = self.CodeSize_Label_4.text()
+        # self.new_dict["UCP_calculation"] = self.CodeSize_Label_5.text()
+        self.new_dict["PF_calculation"] = self.EI_lineedit_2.text()
+        self.new_dict["LOC_mon_calculation"] = self.EO_lineedit_2.text()
+        self.new_dict["LOC_UCP_calculation"] = self.EInq_lineedit_2.text()
+        self.new_dict["UCP_calculation"] = self.ILF_lineedit_2.text()
+        self.new_dict["EstimatedHours"] = self.ILF_lineedit_3.text()
+        self.new_dict["EstimatedLOC"] = self.ILF_lineedit_4.text()
+        self.new_dict["EstimatedPM"] = self.ILF_lineedit_5.text()
+        # print("UCP is returning: {}".format(self.new_dict))
+        return self.new_dict
+
+    def restore_data(self):
+        print("UCP Restore called")
+        self.CodeSize_Label_2.setText(self.new_dict["TCP_calculation"])
+        self.CodeSize_Label_3.setText(self.new_dict["ECF_calculation"])
+        self.CodeSize_Label_4.setText(self.new_dict["UUCP_calculation"])
+        self.EI_lineedit_2.setText(self.new_dict["PF_calculation"])
+        self.EO_lineedit_2.setText(self.new_dict["LOC_mon_calculation"])
+        self.EInq_lineedit_2.setText(self.new_dict["LOC_UCP_calculation"])
+        self.ILF_lineedit_2.setText(self.new_dict["UCP_calculation"])
+        self.ILF_lineedit_3.setText(self.new_dict["EstimatedHours"])
+        self.ILF_lineedit_4.setText(self.new_dict["EstimatedLOC"])
+        self.ILF_lineedit_5.setText(self.new_dict["EstimatedPM"])
+
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
@@ -236,7 +281,7 @@ class Ui_Form(object):
         self.codesize_btn_2.setText(_translate("Form", "UUCP Calculation"))
         self.CodeSize_Label_4.setText(_translate("Form", "0"))
         self.chooselang_btn_2.setText(_translate("Form", "UCP Calculation"))
-        self.CodeSize_Label_5.setText(_translate("Form", "0"))
+        # self.CodeSize_Label_5.setText(_translate("Form", "0"))
         self.label_21.setText(_translate("Form", "Productivity Factor"))
         self.EI_lineedit_2.setText(_translate("Form", "20"))
         self.label_16.setText(_translate("Form", "Total UCP"))
@@ -247,9 +292,10 @@ class Ui_Form(object):
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
-    ui = Ui_Form()
+    ui = UCP_Ui_Form()
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())

@@ -76,7 +76,7 @@ class Ui_Dialog(object):
         elif self.ada_radio_btn.isChecked():
             self.result = (154, "ADA")
         elif self.c_radio_btn.isChecked():
-            self.result = (148,"C")
+            self.result = (148, "C")
         elif self.cplus_radio_btn.isChecked():
             self.result = (59, "C++")
         elif self.csharp_radio_btn.isChecked():
@@ -98,7 +98,7 @@ class Ui_Dialog(object):
 
         self.setvalue(self.result)
 
-    def setvalue(self,value):
+    def setvalue(self, value):
         self.result = value
 
     def getvalue(self):

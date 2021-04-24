@@ -13,6 +13,7 @@ class Ui_Form(object):
         self.vaf_value = 0
         self.fp = 0
         self.new_dict = saved_dict
+        # print("Printing saved dict: {}".format(saved_dict))
         Ui_Form.counter += 1
 
     def setupUi(self, Form, fpname):
@@ -373,6 +374,9 @@ class Ui_Form(object):
         self.Language_Label_2.setText(self.lang)
 
     def save(self):
+        # self.new_dict[]
+        # print("FP new dict contains {}".format(self.new_dict))
+        self.new_dict = {}
         self.new_dict["EI_lineedit"] = self.EI_lineedit_2.text()
         self.new_dict["EO_lineedit"] = self.EO_lineedit_2.text()
         self.new_dict["EInq_lineedit"] = self.EInq_lineedit_2.text()
@@ -422,9 +426,11 @@ class Ui_Form(object):
         ##
         self.new_dict["language"] = self.Language_Label_2.text()
         ##
+        # print("FP is returning: {}".format(self.new_dict))
         return self.new_dict
 
     def restore_data(self):
+        print("FP Restore called")
         self.EI_lineedit_2.setText(self.new_dict["EI_lineedit"])
         self.EO_lineedit_2.setText(self.new_dict["EO_lineedit"])
         self.EInq_lineedit_2.setText(self.new_dict["EInq_lineedit"])

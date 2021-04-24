@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QFont
-import SE_newproject, SE_common_dialog, SE_functionPoint, SE_UCP
+import SE_newproject, SE_common_dialog, SE_functionPoint, SE_UCP, SE_OpenProj_Dialog
 from PyQt5.QtWidgets import QFileDialog, QToolTip
 import inspect, pickle
 
@@ -13,35 +13,50 @@ class Ui_MainWindow(object):
         self.lang = "Visual Basic"
         self.tabs_list = []
         self.saveresults = {}
+        self.savedvalue = {}
+        self.class_names_arr =[]
         QToolTip.setFont(QFont('SansSerif', 10))
 
     def save_file(self):
+        # global self.savedvalue
         saveDialog = QFileDialog()
         saveDialog.setWindowTitle("Save File")
         saveDialog.setAcceptMode(QFileDialog.AcceptSave)
         saveDialog.setNameFilter('MS Files (*.ms)')
         saveDialog.setDefaultSuffix('ms')
 
-        savedvalue = self.fpobj.save()
+        for obj in self.tabs_list:
+            self.tab_array.append(obj.save())
+        for obj in self.tabs_list:
+            self.class_names_arr.append(obj.__class__.__name__)
+        self.tab_array.append(self.class_names_arr)
 
         if saveDialog.exec_() == QFileDialog.Accepted:
             file_name = saveDialog.selectedFiles()
             with open(file_name[0], 'wb') as file:
-                pickle.dump(savedvalue, file)
+                pickle.dump(self.tab_array, file)
             file.close()
 
     def open_file(self):
-        openDialog = QFileDialog()
-        openDialog.setWindowTitle("Open File")
-        openDialog.setAcceptMode(QFileDialog.AcceptOpen)
-        openDialog.setNameFilter('MS File (*.ms)')
+            openDialog = QFileDialog()
+            openDialog.setWindowTitle("Open File")
+            openDialog.setAcceptMode(QFileDialog.AcceptOpen)
+            openDialog.setNameFilter('MS File (*.ms)')
 
-        if openDialog.exec() == QFileDialog.Accepted:
-            file_name = openDialog.selectedFiles()[0]
-            with open(file_name, 'rb') as file:
-                self.saveresults = pickle.load(file)
-            self.displayfp()
-            self.fpobj.restore_data()
+            if openDialog.exec() == QFileDialog.Accepted:
+                file_name = openDialog.selectedFiles()[0]
+                with open(file_name, 'rb') as file:
+                    self.arr_saveresults = pickle.load(file)
+                    classname = self.arr_saveresults[len(self.arr_saveresults)-1]
+                    for i in range(len(self.arr_saveresults)-1):
+                        if classname[i] == "UCP_Ui_Form":
+                            self.saveresults = self.arr_saveresults[i]
+                            self.displayUCP()
+                            self.ucpobj.restore_data()
+                        else:
+                            self.saveresults = self.arr_saveresults[i]
+                            self.displayfp()
+                            self.fpobj.restore_data()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -167,8 +182,8 @@ class Ui_MainWindow(object):
             self.widgetobject = QtWidgets.QWidget()
             self.u_dialog = self.uc_dialog.getfp_name()
             Form = QtWidgets.QWidget()
-            SE_UCP.Ui_Form()
-            self.ucpobj = SE_UCP.Ui_Form()
+            # SE_UCP.UCP_Ui_Form()
+            self.ucpobj = SE_UCP.UCP_Ui_Form(self.saveresults)
             self.ucpobj.setupUi(Form, self.u_dialog)
             self.tabs_list.append(self.ucpobj)
             self.tabWidget.addTab(Form, self.u_dialog)
