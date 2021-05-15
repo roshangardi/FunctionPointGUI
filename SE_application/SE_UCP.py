@@ -237,7 +237,6 @@ class UCP_Ui_Form(object):
             self.CodeSize_Label_4.setText(str(self.uucp_obj.get_uucp_value()))
 
     def save(self):
-        # print("UCP new dict contains {}".format(self.new_dict))
         self.new_dict={}
         self.new_dict["TCP_calculation"] = self.CodeSize_Label_2.text()
         self.new_dict["ECF_calculation"] = self.CodeSize_Label_3.text()
@@ -254,7 +253,6 @@ class UCP_Ui_Form(object):
         return self.new_dict
 
     def restore_data(self):
-        print("UCP Restore called")
         self.CodeSize_Label_2.setText(self.new_dict["TCP_calculation"])
         self.CodeSize_Label_3.setText(self.new_dict["ECF_calculation"])
         self.CodeSize_Label_4.setText(self.new_dict["UUCP_calculation"])

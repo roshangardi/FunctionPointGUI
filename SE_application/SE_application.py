@@ -1,8 +1,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QFont
-import SE_newproject, SE_common_dialog, SE_functionPoint, SE_UCP, SE_OpenProj_Dialog
-from PyQt5.QtWidgets import QFileDialog, QToolTip
-import inspect, pickle
+import SE_newproject, SE_common_dialog, SE_functionPoint, SE_UCP, SE_OpenProj_Dialog, SE_SMI
+from PyQt5.QtWidgets import QFileDialog, QToolTip, QMessageBox, QPushButton
+import pickle
 
 
 class Ui_MainWindow(object):
@@ -18,7 +18,6 @@ class Ui_MainWindow(object):
         QToolTip.setFont(QFont('SansSerif', 10))
 
     def save_file(self):
-        # global self.savedvalue
         saveDialog = QFileDialog()
         saveDialog.setWindowTitle("Save File")
         saveDialog.setAcceptMode(QFileDialog.AcceptSave)
@@ -38,6 +37,7 @@ class Ui_MainWindow(object):
             file.close()
 
     def open_file(self):
+            flag = 0
             openDialog = QFileDialog()
             openDialog.setWindowTitle("Open File")
             openDialog.setAcceptMode(QFileDialog.AcceptOpen)
@@ -53,10 +53,21 @@ class Ui_MainWindow(object):
                             self.saveresults = self.arr_saveresults[i]
                             self.displayUCP()
                             self.ucpobj.restore_data()
-                        else:
+                        elif classname[i] == "Ui_Form":
                             self.saveresults = self.arr_saveresults[i]
                             self.displayfp()
                             self.fpobj.restore_data()
+                        else:
+                            flag=1
+                            self.saveresults = self.arr_saveresults[i]
+                            self.displaySMI()
+                            self.smi_obj.restore_data()
+            if flag:
+                self.SMI_action.setEnabled(False)
+            else:
+                self.SMI_action.setEnabled(True)
+            self.UCP_action.setEnabled(True)
+            self.actionEnter_FP_Data.setEnabled(True)
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -65,7 +76,6 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-
         self.menubar.setGeometry(QtCore.QRect(0, 0, 642, 21))
         self.menubar.setObjectName("menubar")
         self.Menu_file = QtWidgets.QMenu(self.menubar)
@@ -84,6 +94,10 @@ class Ui_MainWindow(object):
         self.menuUCP_Point = QtWidgets.QMenu(self.Menu_metrics)
         self.menuUCP_Point.setObjectName("menuUCP_Point")
         self.menuUCP_Point.setToolTipsVisible(True)
+
+        self.menuSMI = QtWidgets.QMenu(self.Menu_metrics)
+        self.menuSMI.setObjectName("menuSMI")
+        self.menuSMI.setToolTipsVisible(True)
 
         self.Menu_Project_code = QtWidgets.QMenu(self.menubar)
         self.Menu_Project_code.setObjectName("Menu_Project_code")
@@ -107,7 +121,11 @@ class Ui_MainWindow(object):
 
         self.UCP_action = QtWidgets.QAction(MainWindow)
         self.UCP_action.setObjectName("UCP_action")
-        # self.UCP_action.setEnabled(False)
+        self.UCP_action.setEnabled(False)
+
+        self.SMI_action = QtWidgets.QAction(MainWindow)
+        self.SMI_action.setObjectName("SMI_action")
+        self.SMI_action.setEnabled(False)
 
         self.File_Save.setEnabled(False)
         self.Menu_file.addAction(self.File_new)
@@ -119,6 +137,9 @@ class Ui_MainWindow(object):
 
         self.menuUCP_Point.addAction(self.UCP_action)
         self.Menu_metrics.addAction(self.menuUCP_Point.menuAction())
+
+        self.menuSMI.addAction(self.SMI_action)
+        self.Menu_metrics.addAction(self.menuSMI.menuAction())
 
         self.menubar.addAction(self.Menu_file.menuAction())
         self.menubar.addAction(self.Menu_edit.menuAction())
@@ -149,6 +170,7 @@ class Ui_MainWindow(object):
         self.actionEnter_FP_Data.triggered.connect(self.displayfp)
 
         self.UCP_action.triggered.connect(self.displayUCP)
+        self.SMI_action.triggered.connect(self.displaySMI)
 
         self.actionEnter_FP_Data.setToolTip("This is a widget")
         self.File_new.setToolTip("Tooltip message")
@@ -158,7 +180,9 @@ class Ui_MainWindow(object):
         self.File_Save.triggered.connect(lambda: self.save_file())
         self.File_Save.setToolTip("Create New project to save")
         self.File_Open.triggered.connect(lambda: self.open_file())
-        self.actionEnter_FP_Data.setToolTip("Create project before FP")
+        self.actionEnter_FP_Data.setToolTip("Create project before accessing metrics")
+        self.UCP_action.setToolTip("Create project before accessing metrics")
+        self.SMI_action.setToolTip("Create project before accessing metrics")
         # comment end
 
         self.retranslateUi(MainWindow)
@@ -168,8 +192,41 @@ class Ui_MainWindow(object):
         self.tabWidget.removeTab(index)
 
     def exiter(self):
-        print("Good Bye")
-        sys.exit()
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText("Do you want to save the changes?")
+        msgBox.setWindowTitle("Save/Discard Changes")
+        # msgBox.setStandardButtons(QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel )
+        msgBox.setStandardButtons(QMessageBox.Save | QMessageBox.Discard)
+
+        returnValue = msgBox.exec()
+        if returnValue == QMessageBox.Save:
+            self.save_file()
+            sys.exit()
+        elif returnValue == QMessageBox.Discard:
+            print("Good Bye")
+            sys.exit()
+        # elif returnValue == QMessageBox.Cancel:
+        #     return
+
+    def displaySMI(self):
+        Dialog3 = QtWidgets.QDialog()
+        self.uc_dialog = SE_common_dialog.Ui_Dialog()
+        self.uc_dialog.setupUi(Dialog3)
+        Dialog3.show()
+        self.response = Dialog3.exec_()
+
+        if self.response == QtWidgets.QDialog.Accepted:
+            self.widgetobject = QtWidgets.QWidget()
+            self.u_dialog = "SMI"
+            Form = QtWidgets.QWidget()
+            self.smi_obj = SE_SMI.SMI_Ui_Form(self.saveresults)
+            self.smi_obj.setupUi(Form, self.u_dialog)
+            self.tabs_list.append(self.smi_obj)
+            self.tabWidget.addTab(Form, self.u_dialog)
+            self.tabWidget.setCurrentIndex(self.tabWidget.count() - 1)
+            self.File_Save.setEnabled(True)
+            self.SMI_action.setEnabled(False)
 
     def displayUCP(self):
         Dialog3 = QtWidgets.QDialog()
@@ -182,7 +239,6 @@ class Ui_MainWindow(object):
             self.widgetobject = QtWidgets.QWidget()
             self.u_dialog = self.uc_dialog.getfp_name()
             Form = QtWidgets.QWidget()
-            # SE_UCP.UCP_Ui_Form()
             self.ucpobj = SE_UCP.UCP_Ui_Form(self.saveresults)
             self.ucpobj.setupUi(Form, self.u_dialog)
             self.tabs_list.append(self.ucpobj)
@@ -217,6 +273,8 @@ class Ui_MainWindow(object):
 
         if self.response == QtWidgets.QDialog.Accepted:
             self.actionEnter_FP_Data.setEnabled(True)
+            self.UCP_action.setEnabled(True)
+            self.SMI_action.setEnabled(True)
             self.projname_value = self.newproj_obj.getproject_name()
             _translate = QtCore.QCoreApplication.translate
             MainWindow.setWindowTitle(_translate("MainWindow", "CECS 543 Metrics Suite - " + self.projname_value))
@@ -230,6 +288,7 @@ class Ui_MainWindow(object):
         self.Menu_metrics.setTitle(_translate("MainWindow", "Metrics"))
         self.menuFunction_Point.setTitle(_translate("MainWindow", "Function Point"))
         self.menuUCP_Point.setTitle(_translate("MainWindow", "UCP Point"))
+        self.menuSMI.setTitle(_translate("MainWindow", "Software Maturity Index"))
         self.Menu_Project_code.setTitle(_translate("MainWindow", "Project code"))
         self.Menu_Help.setTitle(_translate("MainWindow", "Help"))
         self.File_new.setText(_translate("MainWindow", "New"))
@@ -245,6 +304,9 @@ class Ui_MainWindow(object):
 
         self.UCP_action.setText(_translate("MainWindow", "Calculate UCP"))
         self.UCP_action.setShortcut(_translate("MainWindow", "Ctrl+P"))
+
+        self.SMI_action.setText(_translate("MainWindow", "Calculate SMI"))
+        self.SMI_action.setShortcut(_translate("MainWindow", "Ctrl+I"))
         ##
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
 
@@ -255,8 +317,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
     def closeEvent(self, event):
-        super().closeEvent(event)
-
+        self.exiter()
+        # sys.exit()
 
 if __name__ == "__main__":
     import sys

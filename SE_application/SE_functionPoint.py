@@ -430,7 +430,6 @@ class Ui_Form(object):
         return self.new_dict
 
     def restore_data(self):
-        print("FP Restore called")
         self.EI_lineedit_2.setText(self.new_dict["EI_lineedit"])
         self.EO_lineedit_2.setText(self.new_dict["EO_lineedit"])
         self.EInq_lineedit_2.setText(self.new_dict["EInq_lineedit"])

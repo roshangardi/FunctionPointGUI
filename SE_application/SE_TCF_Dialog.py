@@ -499,7 +499,7 @@ class Ui_Dialog(object):
         self.total_TCF = self.T1 + self.T2 + self.T3 + self.T4 + self.T5 + self.T6 + self.T7 + self.T8 + self.T9 + self.T10 + self.T11 + self.T12 + self.T13
         self.lineEdit.setText(str(self.total_TCF))
         # self.TCF = 0.6 + (0.1 * self.total_TCF)
-        self.TCF = round(decimal.Decimal(str(0.6 + (0.1 * self.total_TCF))), 2)
+        self.TCF = round(decimal.Decimal(str(0.6 + (0.01 * self.total_TCF))), 2)
         self.lineEdit_41.setText(str(self.TCF))
         self.set_tcf_value(self.TCF)
 
